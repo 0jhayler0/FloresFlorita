@@ -25,9 +25,15 @@ app.post('/eras', async (req, res) => {
   }
 
   try {
+    // Convertir a números enteros y generar ID
+    const bloqueInt = Math.floor(bloque)
+    const naveInt = Math.floor(nave)
+    const eraInt = Math.floor(numerodeera)
+    const id = `${bloqueInt}${naveInt}${lado}${eraInt}`
+
     const result = await pool.query(
-      'INSERT INTO eras (bloque, nave, lado, numerodeera, metros) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [bloque, nave, lado, numerodeera, metros]
+      'INSERT INTO eras (id, bloque, nave, lado, numerodeera, metros) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [id, bloque, nave, lado, numerodeera, metros]
     )
     res.status(201).json(result.rows[0])
   } catch (err) {
@@ -75,6 +81,80 @@ app.delete('/eras/:id', async (req, res) => {
     }
     
     res.json({ message: 'Era eliminada correctamente' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// GET todas las variedades
+app.get('/varieties', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM varieties ORDER BY id ASC')
+    res.json(result.rows)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// POST crear nueva variedad
+app.post('/varieties', async (req, res) => {
+  const { name, color } = req.body
+  
+  if (!name || !color) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' })
+  }
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO varieties (name, color) VALUES ($1, $2) RETURNING *',
+      [name, color]
+    )
+    res.status(201).json(result.rows[0])
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// PUT actualizar variedad
+app.put('/varieties/:id', async (req, res) => {
+  const { id } = req.params
+  const { name, color } = req.body
+  
+  if (!name || !color) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' })
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE varieties SET name = $1, color = $2 WHERE id = $3 RETURNING *',
+      [name, color, id]
+    )
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Variedad no encontrada' })
+    }
+    
+    res.json(result.rows[0])
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// DELETE eliminar variedad
+app.delete('/varieties/:id', async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const result = await pool.query(
+      'DELETE FROM varieties WHERE id = $1 RETURNING *',
+      [id]
+    )
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Variedad no encontrada' })
+    }
+    
+    res.json({ message: 'Variedad eliminada correctamente' })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

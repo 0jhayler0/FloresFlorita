@@ -45,13 +45,8 @@ header h1 {
 }
 
 .formContainer {
-    width: 90%;
-    height: 100px;
-    content: "";
-    
-    margin: 0 auto;
-    margin-top: 90px;
-    
-    border: #333 2px solid;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    margin-top: 60px;
 }
 

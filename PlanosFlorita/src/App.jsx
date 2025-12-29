@@ -3,6 +3,7 @@ import { useState } from 'react'
 import PlanForm from './components/PlanForm'
 import HamburgerMenu from './components/HamburgerMenu'
 import ErasForm from './components/ErasForm'
+import VarietiesForm from './components/VarietiesForm'
 import floritaIcon from './assets/floritaIcon.png'
 
 import './styles/App.css'
@@ -29,6 +30,7 @@ function App() {
       <div className='formContainer'>
         {activeView === 'main' && <PlanForm />}
         {activeView === 'eras' && <ErasForm onClose={() => setActiveView('main')} />}
+        {activeView === 'varieties' && <VarietiesForm onClose={() => setActiveView('main')} />}
       </div>
     </div>
     </>
