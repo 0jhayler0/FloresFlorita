@@ -1,8 +1,8 @@
 import React from 'react'
 
-import '../styles/PlanForm.css'
+import '../styles/Content.css'
 
-const PlanForm = () => {
+const Content = () => {
   return (
     <div className='formContent'>
         <h1 className='formTitle'>
@@ -15,4 +15,4 @@ const PlanForm = () => {
   )
 }
 
-export default PlanForm
+export default Content

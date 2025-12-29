@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import PlanForm from './components/PlanForm'
+import Content from './components/Content'
 import HamburgerMenu from './components/HamburgerMenu'
 import ErasForm from './components/ErasForm'
 import VarietiesForm from './components/VarietiesForm'
@@ -28,7 +28,7 @@ function App() {
         <HamburgerMenu onMenuItemClick={handleMenuItemClick} />
       </header>
       <div className='formContainer'>
-        {activeView === 'main' && <PlanForm />}
+        {activeView === 'main' && <Content />}
         {activeView === 'eras' && <ErasForm onClose={() => setActiveView('main')} />}
         {activeView === 'varieties' && <VarietiesForm onClose={() => setActiveView('main')} />}
       </div>
